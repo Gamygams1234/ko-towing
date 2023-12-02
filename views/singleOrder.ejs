@@ -76,7 +76,7 @@
         <div class="row">
           <div class="col-md-4">
             <h5>Additional Fees:</h5>
-            <p><%= Math.ceil((currentDay- order.pickUpDay) / (1000 * 3600 * 24)) %></p>
+            <p><%= order.additionalFees%></p>
           </div>
           <% if (!order.paid){%>
           <div class="col-md-4">
@@ -91,11 +91,11 @@
           <% } %>
         </div>
 
-        <% if(order.additionalFees.length !== ""){ %>
+        <% if(order.additionalFeesReason.length !== ""){ %>
         <div class="row">
           <div class="col-md-12">
             <h5>Additional Fees Reason:</h5>
-            <p><%= order.additionalFees %></p>
+            <p><%= order.additionalFeesReason %></p>
           </div>
         </div>
         <%} %> 
