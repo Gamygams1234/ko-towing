@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>List of the companies</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <%- include('partials/navigation.ejs') %>
+
+    <% if (orders.length > 0){ %>
+    <main class="container">
+      <h1>Search Results</h1>
+      <div class="row companies row-cols-1 row-cols-md-3">
+        <% for(var i=0; i<orders.length; i++) {%>
+          <% if (!orders[i].hidden){%>
+        <div class="col mb-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <p class="card-text">PO: <span><%= orders[i].policyOrder%></span></p>
+                <h5 class="card-title"><%= orders[i].year + " " + orders[i].make + " "+ orders[i].model  %></h5>
+                <h6 class="card-title">Company: <%=  orders[i].company.name  %></h6>
+                <h6 class="card-title">Vin: <%=  orders[i].vin  %></h6>
+                <% if (!orders[i].paid){ %>
+                <h6 class="card-title">Pick Up Day: <%= orders[i].pickUpDay.toString().substring(0,16) %></h6>
+                <h6 class="card-title">Current Fees:  <%=  (Math.ceil((new Date() - orders[i].pickUpDay) / (1000 * 3600 * 24)) * orders[i].company.dayPrice) +  orders[i].company.servicePrice + orders[i].company.pickUpFee +  orders[i].additionalFees %> </h6>
+                <% }else { %> 
+                  <h6 class="card-title">Released: <%= orders[i].releaseDay.toString().substring(0,16) %></h6>
+                  <h6 class="card-title">Price:  <%= orders[i].price %> </h6>
+                <% } %>
+                <a href="/orders/<%= orders[i]._id%>" class="btn btn-primary">See Details</a>
+              </div>
+            </div>
+        </div>
+        <% } %>
+        <% } %>
+    
+
+    
+      </div>
+    </main>
+    <% }else{ %>
+        <main class="container">
+            <h1>Sorry your search came up empty...</h1>
+            <a href="/" class="btn btn-primary" type="button">Go to Home</a>
+
+        </main>
+        <% } %>
+  </body>
+</html>

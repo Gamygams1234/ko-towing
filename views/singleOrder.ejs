@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <%- include('partials/navigation.ejs') %> <%if (!order.hidden){%>
+    <main class="container">
+      <h1 class="mb-2">Order Details:</h1>
+
+      <div class="order-details">
+        <div class="row">
+          <div class="col-md-6">
+            <h5>Policy Order:</h5>
+            <p><%= order.policyOrder %></p>
+          </div>
+          <div class="col-md-6">
+            <h5>Company:</h5>
+            <p><%= order.company.name %></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <h5>Year:</h5>
+            <p><%= order.year %></p>
+          </div>
+          <div class="col-md-4">
+            <h5>Make:</h5>
+            <p><%= order.make%></p>
+          </div>
+          <div class="col-md-4">
+            <h5>Model:</h5>
+            <p><%= order.model%></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <h5>Licence Plate:</h5>
+            <p><%= order.plate%></p>
+          </div>
+          <div class="col-md-4">
+            <h5>VIN:</h5>
+            <p><%= order.vin%></p>
+          </div>
+          <div class="col-md-4">
+            <h5>Pick Up Day:</h5>
+            <p><%= order.pickUpDay.toString().substring(0,16)%></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <h5>Pick Up Fee:</h5>
+            <p><%= order.company.pickUpFee %></p>
+          </div>
+          <div class="col-md-4">
+            <h5>Service Price:</h5>
+            <p><%= order.company.servicePrice %></p>
+          </div>
+          <div class="col-md-4">
+            <h5>Daily Fee:</h5>
+            <p><%= order.company.dayPrice%></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <h5>Additional Fees:</h5>
+            <p><%= Math.ceil((currentDay- order.pickUpDay) / (1000 * 3600 * 24)) %></p>
+          </div>
+          <% if (!order.paid){%>
+          <div class="col-md-4">
+            <h5>Total Price:</h5>
+            <p><%= (Math.ceil((currentDay- order.pickUpDay) / (1000 * 3600 * 24)) * order.company.dayPrice) + order.company.servicePrice + order.company.pickUpFee + order.additionalFees %></p>
+          </div>
+          <% } else { %>
+          <div class="col-md-4">
+            <h5>Total Price:</h5>
+            <p><%= order.price %></p>
+          </div>
+          <% } %>
+        </div>
+
+        <% if(order.additionalFees.length !== ""){ %>
+        <div class="row">
+          <div class="col-md-12">
+            <h5>Additional Fees Reason:</h5>
+            <p><%= order.additionalFees %></p>
+          </div>
+        </div>
+        <%} %> 
+        <% if (order.paid){%>
+        <div class="row">
+          <div class="col-md-12">
+            <h5>Release Day:</h5>
+            <p><%= order.releaseDay.toString().substring(0,16)%></p>
+          </div>
+        </div>
+        <% } %>
+
+        <div class="row">
+          <% if (!order.paid){%>
+          <form action="/orders/pay/<%= order.id %>?_method=PUT" method="POST">
+            <input type="submit" class="btn btn-primary mr-2" value="Pay $<%= (Math.ceil((currentDay- order.pickUpDay) / (1000 * 3600 * 24)) * order.company.dayPrice) +  order.company.servicePrice + order.company.pickUpFee +  order.additionalFees  %>" />
+          </form>
+          <a href="/orders/edit/<%= order.id %>" class="btn btn-primary mr-2" type="button">Edit Details</a>
+          <form action="/orders/delete/<%= order.id %>?_method=PUT" method="POST">
+            <input type="submit" class="btn btn-danger" value="Remove Order" />
+          </form>
+          <% } else {%>
+          <button class="btn btn-primary mr-2" disabled>Paid $<%= order.price %></button>
+          <form action="/orders/delete/<%= order.id %>?_method=PUT" method="POST">
+            <input type="submit" class="btn btn-danger" value="Remove Order" />
+          </form>
+          <%}%>
+        </div>
+      </div>
+    </main>
+    <%}else{ %>
+    <main class="container">
+      <h1 class="mb-2">Order Not Found!</h1>
+      <a href="/" class="btn btn-primary" type="button">Go Back</a>
+    </main>
+    <% } %>
+  </body>
+</html>

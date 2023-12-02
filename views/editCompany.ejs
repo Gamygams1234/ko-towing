@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Creating the companies</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/css/styles.css" />
+    
+  </head>
+  <body>
+    <%- include('partials/navigation.ejs') %>
+    <main class="container">
+      <h1>Update <%=company.name %></h1>
+
+      <form action="/companies/update/<%=company._id%>?_method=PUT" method="POST">
+        <div class="form-group">
+          <label for="inputName">Name</label>
+          <input type="text" value="<%=company.name %>" class="form-control" name="name" id="inputName" placeholder="Name" />
+        </div>
+        <div class="form-group">
+          <label for="inputService">Service Price</label>
+          <input type="number" value="<%=company.servicePrice %>"  class="form-control" min="0" name="servicePrice" id="inputService" placeholder="Insert price here" />
+        </div>
+        <div class="form-group">
+          <label for="inputDay">Day Price</label>
+          <input type="number" value="<%=company.dayPrice %>" class="form-control" min="0" name="dayPrice" id="inputDay" placeholder="Insert price here" />
+        </div>
+        <div class="form-group">
+          <label for="inputPickUp">Pick Up Fee</label>
+          <input type="number" value="<%=company.pickUpFee %>" class="form-control" min="0" name="pickUpFee" id="inputPickUp" placeholder="Insert price here" />
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+      </form>
+    </main>
+  </body>
+</html>

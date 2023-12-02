@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of the companies</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="/css/styles.css">
+
+</head>
+<body>
+
+  <%- include('partials/navigation.ejs') %>
+
+      <main class="container">
+        <h1>This will  get all of the companies</h1>
+
+
+        <div class="row companies row-cols-1 row-cols-md-3">
+          
+
+                <% for(var i=0; i<companies.length; i++) {%>
+                  
+                <% if (!companies[i].hidden){ %>
+                    <div class="col mb-4">
+                        <div class="card h-100">
+                    
+                          <div class="card-body">
+                            <h5 class="card-title"><%= companies[i].name %></h5>
+                            <p class="card-text">Service Price: <span class="fw-500"><%= companies[i].servicePrice %></span></p>
+                            <p class="card-text">Day Price: <span class="fw-500"><%= companies[i].dayPrice %></span></p>
+
+                            <a href="/companies/update/<%= companies[i].id %>" class="btn btn-primary">Edit Details</a>
+                         
+
+                            <form action="/companies/remove/<%= companies[i].id %>?_method=PUT" method="POST"  >
+                              <input type="submit" class="btn btn-danger" 
+                              value="Remove Company" />
+                          </form>
+                          </div>
+                        </div>
+                      </div>
+                      <% } %>
+                    <% } %>
+
+            </div>
+
+      </main>
+
+     
+    
+</body>
+</html>
